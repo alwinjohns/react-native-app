@@ -10,7 +10,6 @@ export default class Main extends React.Component {
     render() {
       return (
         <View style={styles.container}>
-            <Text style={styles.header}>Actors</Text>
             <FlatList
               data={actors}
               renderItem={({item}) => <ListItem1 item={item}/>}
