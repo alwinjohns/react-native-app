@@ -2,7 +2,18 @@ import React from 'react'
 import { StyleSheet, Text, View, Button, FlatList, TextInput } from 'react-native'
 import { getActorSynonyms } from './../reducers/fakeSynonyms'
 
-const ListItem = ({item}) => <View><Text style={styles.item}>{item.key}</Text></View>
+const ListItem = ({item}) =>
+    <View>
+      <Text
+        style={styles.item}>{item.key}
+      </Text>
+      <Button
+        style={styles.removeButton}
+        title={'Remove'}
+        onPress={() => {}}
+        color="#841584"
+      />
+    </View>
 
 export default class Synonyms extends React.Component {
   constructor(props) {
@@ -31,6 +42,7 @@ export default class Synonyms extends React.Component {
           placeholder={'Add new synonyms'}
         />
         <Button
+          style={styles.addButton}
           title={'Add'}
           onPress={() => {this.setState({synonymList: [...this.state.synonymList, this.state.text]})
         }}
@@ -63,5 +75,15 @@ const styles = StyleSheet.create({
     margin: 30,
     borderColor: 'gray',
     borderWidth: 1,
+  },
+  removeButton: {
+    height: 40,
+    width: 250,
+    marginLeft: 330,
+  },
+  addButton: {
+    height: 40,
+    width: 250,
+    marginBottom: 130,
   },
 })
