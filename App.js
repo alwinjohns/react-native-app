@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import Main from './src/components/main'
 import Synonyms from './src/components/Synonyms'
+import TopBarIconExample from './src/components/BottomBarIconText'
 import { StackNavigator } from 'react-navigation'
 
 class HomeScreen extends React.Component {
@@ -19,7 +20,7 @@ class HomeScreen extends React.Component {
 
 const App = StackNavigator({
   Home: { screen: HomeScreen },
-  Chat: { screen: Synonyms },
+  Chat: { screen: TopBarIconExample },
 })
 
 const styles = StyleSheet.create({
