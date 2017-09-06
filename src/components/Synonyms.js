@@ -1,14 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button, FlatList, TextInput } from 'react-native'
-import { actorSynonyms } from './../reducers/fakeSynonyms'
+import { getActorSynonyms } from './../reducers/fakeSynonyms'
 
-const ListItem = ({item}) => <Text style={styles.item}>{item.key}</Text>
+const ListItem = ({item}) => <View><Text style={styles.item}>{item.key}</Text></View>
 
 export default class Synonyms extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      synonymList: actorSynonyms || [],
+      synonymList: getActorSynonyms(this.props.navigation.state.params.actor) || [],
       text: '',
     }
   }
