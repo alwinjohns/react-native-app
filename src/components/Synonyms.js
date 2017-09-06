@@ -7,7 +7,10 @@ const ListItem = ({item}) => <Text style={styles.item}>{item.key}</Text>
 export default class Synonyms extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { text: '' };
+    this.state = {
+      synonymList: actorSynonyms || [],
+      text: '',
+    }
   }
   static navigationOptions = ({ navigation }) => ({
     title: `Synonyms for ${navigation.state.params.actor}`,
@@ -18,7 +21,7 @@ export default class Synonyms extends React.Component {
       <View style={styles.container}>
         <Text style={styles.header}>{`Actor : ${params.actor}`}</Text>
         <FlatList
-          data={actorSynonyms}
+          data={this.state.synonymList.map(e => ({key: e}))}
           renderItem={({item}) => <ListItem item={item} />}
         />
         <TextInput
@@ -29,7 +32,8 @@ export default class Synonyms extends React.Component {
         />
         <Button
           title={'Add'}
-          onPress={() => {}}
+          onPress={() => {this.setState({synonymList: [...this.state.synonymList, this.state.text]})
+        }}
         />
       </View>
     )
