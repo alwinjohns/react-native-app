@@ -3,16 +3,16 @@ import { Alert, StyleSheet, Text, View, FlatList } from 'react-native'
 import { actors } from './../reducers/fakeActorsList'
 import { getMoviesFromApiAsync } from './../reducers/actors'
 
-const ListItem1 = ({item}) => <Text style={styles.item} onPress={() => { Alert.alert(`You tapped ${item.key}`)}}>{item.key}</Text>
+const ListItem = ({item, navigate}) => <Text style={styles.item} onPress={() => navigate('Chat', { actor: item.key })}>{item.key}</Text>
 
 export default class Main extends React.Component {
-
     render() {
+      const { navigate } = this.props
       return (
         <View style={styles.container}>
             <FlatList
               data={actors}
-              renderItem={({item}) => <ListItem1 item={item}/>}
+              renderItem={({item}) => <ListItem item={item} navigate={navigate}/>}
             />
         </View>
       )

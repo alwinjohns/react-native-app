@@ -1,13 +1,13 @@
 const list = [
-    'Franklin_D._Roosevelt',
-    'Roosevelt',
-    'Devin',
+    'Barack Obama',
+    'Franklin Roosevelt',
+    'Donald Trump',
+    'Vladimir Putin',
     'Jackson',
-    'James',
-    'Joel',
-    'John',
-    'Jillian',
-    'Jimmy',
-    'Julie',
+    'Hillary Clinton',
+    'Anthony Scaramucci',
+    'Justin Trudeau',
+    'Bernie Sanders',
+    'Thomas Jefferson',
 ]
 export const actors = list.map(e => ({key: e}))
