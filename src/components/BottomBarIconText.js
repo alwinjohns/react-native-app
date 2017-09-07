@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react'
 import { Animated, View, Text, StyleSheet, Image } from 'react-native'
 import { TabViewAnimated, TabBar } from 'react-native-tab-view'
 import SimplePage from './SimplePage'
-
+import Synonyms from './Synonyms'
+import Wiki from './wiki'
+import Role from './Roles'
 import type { NavigationState } from 'react-native-tab-view/types';
 
 type Route = {
@@ -21,10 +23,10 @@ export default class TopBarIconExample extends PureComponent<void, *, State> {
     index: 0,
     routes: [
       { key: '1', title: 'Synonyms', icon: 'icon1' },
-      { key: '2', title: 'Roles', icon: 'icon2' },
-      { key: '3', title: 'Wiki', icon: 'icon3' },
+      { key: '2', title: 'Wiki', icon: 'icon2' },
+      { key: '3', title: 'Roles', icon: 'icon3' },
     ],
-  };
+  }
 
   _handleIndexChange = index => {
     this.setState({
@@ -43,15 +45,15 @@ export default class TopBarIconExample extends PureComponent<void, *, State> {
       >
         <View style={styles.indicator} />
       </Animated.View>
-    );
-  };
+    )
+  }
 
   _renderIcon = ({ route }) => {
 
     // return <Ionicons name={route.icon} size={24} style={styles.icon} />;
-    console.log('route: ', './../images/' + route.icon + '.jpg')
+    // console.log('route: ', './../images/' + route.icon + '.jpg')
     return <Image source={require('./../images/icon1.jpg')} />
-  };
+  }
 
   _renderBadge = ({ route }) => {
     if (route.key === '2') {
@@ -81,40 +83,32 @@ export default class TopBarIconExample extends PureComponent<void, *, State> {
     switch (route.key) {
       case '1':
         return (
-          <SimplePage
-            state={this.state}
-            style={{ backgroundColor: '#ff4081' }}
-          />
-        );
+          <Synonyms actor={this.props.navigation.state.params.actor} />
+        )
       case '2':
         return (
-          <SimplePage
-            state={this.state}
-            style={{ backgroundColor: '#673ab7' }}
-          />
-        );
+          <Wiki actor={this.props.navigation.state.params.actor} />
+        )
       case '3':
         return (
-          <SimplePage
-            state={this.state}
-            style={{ backgroundColor: '#4caf50' }}
-          />
-        );
+          <Role actor={this.props.navigation.state.params.actor} />
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   render() {
+    // console.log('log: ', this.props.navigation.state.params.actor)
     return (
-      <TabViewAnimated
-        style={[styles.container, this.props.style]}
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderFooter={this._renderFooter}
-        onIndexChange={this._handleIndexChange}
-      />
-    );
+        <TabViewAnimated
+          style={[styles.container, this.props.style]}
+          navigationState={this.state}
+          renderScene={this._renderScene}
+          renderFooter={this._renderFooter}
+          onIndexChange={this._handleIndexChange}
+        />
+    )
   }
 }
 
@@ -155,4 +149,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: -2,
   },
-});
+})

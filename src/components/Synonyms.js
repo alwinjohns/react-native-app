@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button, FlatList, TextInput } from 'react-native'
+import { StyleSheet, Text, View, Button, FlatList, TextInput, KeyboardAvoidingView } from 'react-native'
 import { getActorSynonyms } from './../reducers/fakeSynonyms'
 
-const ListItem = ({item}) =>
+const ListItem = ({item, remove}) =>
     <View>
       <Text
         style={styles.item}>{item.key}
@@ -10,30 +10,43 @@ const ListItem = ({item}) =>
       <Button
         style={styles.removeButton}
         title={'Remove'}
-        onPress={() => {}}
+        onPress={() => {remove(item.key)}}
         color="#841584"
       />
     </View>
 
 export default class Synonyms extends React.Component {
+
   constructor(props) {
     super(props)
     this.state = {
-      synonymList: getActorSynonyms(this.props.navigation.state.params.actor) || [],
+      synonymList: getActorSynonyms(this.props.actor) || [],
       text: '',
     }
+    this.removeSynonym = this.removeSynonym.bind(this)
+    this.addSynonym = this.addSynonym.bind(this)
   }
+
   static navigationOptions = ({ navigation }) => ({
-    title: `Synonyms for ${navigation.state.params.actor}`,
+    title: `Add synonyms for ${this.props.actor}`,
   })
+
+  removeSynonym(name) {
+    const index = this.state.synonymList.findIndex((e) => e === name)
+    this.setState({synonymList: [...this.state.synonymList.slice(0, index), ...this.state.synonymList.slice(index + 1)]})
+  }
+  addSynonym() {
+    this.state.text !== '' && this.setState({synonymList: [...this.state.synonymList, this.state.text]})
+    this.state.text = ''
+  }
   render() {
-    const { params } = this.props.navigation.state;
+    const { actor } = this.props
     return (
-      <View style={styles.container}>
-        <Text style={styles.header}>{`Actor : ${params.actor}`}</Text>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <Text style={styles.header}>{`Add synonyms for ${actor}`}</Text>
         <FlatList
           data={this.state.synonymList.map(e => ({key: e}))}
-          renderItem={({item}) => <ListItem item={item} />}
+          renderItem={({item}) => <ListItem item={item} remove={this.removeSynonym}/>}
         />
         <TextInput
           style={styles.inputText}
@@ -44,10 +57,9 @@ export default class Synonyms extends React.Component {
         <Button
           style={styles.addButton}
           title={'Add'}
-          onPress={() => {this.setState({synonymList: [...this.state.synonymList, this.state.text]})
-        }}
+          onPress={this.addSynonym}
         />
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
@@ -55,7 +67,7 @@ export default class Synonyms extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#d0dbd9',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -7,9 +7,10 @@ export default function CurrentStateIndicator({ state, style }: *) {
   return (
     <View style={[styles.page, style]}>
       <View style={styles.container}>
-        <Text style={styles.text}>
+        {/*<Text style={styles.text}>
           Current route is: {state.routes[state.index].title || state.index}
-        </Text>
+        </Text>*/
+        }
       </View>
     </View>
   );

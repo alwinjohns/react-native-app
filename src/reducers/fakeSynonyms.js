@@ -1,14 +1,52 @@
 const actorSynonyms = {
-  'Roosevelt': [
+  'Barack Obama': [
+    'Barack',
+    'Obama',
+    'Obi',
+  ],
+  'Franklin Roosevelt': [
     'Roosevelt',
-    'Jackson',
-    'James',
-    'Joel',
+    'FDR',
+    'Franklin',
     'John',
+  ],
+  'Donald Trump': [
+    'Trump',
+    'Donald',
+    'John',
+    'Donald J Trump',
+  ],
+  'Vladimir Putin': [
+    'Putin',
+    'Russia',
+    'Vladimirowich'
+  ],
+  'Jackson': [
+    'Mississippi',
+    'MJ'
+  ],
+  'Hillary Clinton': [
+    'Hillary',
+    'Clinton',
+  ],
+  'Anthony Scaramucci': [
+    'Anthony',
+    'Scaramucci',
+  ],
+  'Justin Trudeau': [
+    'Justin',
+    'Trudeau',
+  ],
+  'Bernie Sanders': [
+    'Bernie',
+    'Sanders',
+  ],
+  'Thomas Jefferson': [
+    'Thomas',
+    'Jefferson',
   ],
 }
 
 export const getActorSynonyms = (actor) => {
-  console.log('aaaa', actor)
-  return actorSynonyms[actor]
+  return actorSynonyms[actor] || []
 }
