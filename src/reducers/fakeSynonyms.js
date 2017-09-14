@@ -4,7 +4,7 @@ const actorSynonyms = {
     'Obama',
     'Obi',
   ],
-  'Franklin Roosevelt': [
+  'Roosevelt': [
     'Roosevelt',
     'FDR',
     'Franklin',
@@ -48,5 +48,11 @@ const actorSynonyms = {
 }
 
 export const getActorSynonyms = (actor) => {
-  return actorSynonyms[actor] || []
+  fetch('http://104.198.76.143:8080/dictionary/synonyms', {method: "GET"})
+  .then((response) => response.json())
+  .then((responseData) => {
+      console.log('syno: ', responseData[actor]);
+      return responseData[actor]
+  })
+  .done()
 }

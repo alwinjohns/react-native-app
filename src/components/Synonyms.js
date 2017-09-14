@@ -20,13 +20,20 @@ export default class Synonyms extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      synonymList: getActorSynonyms(this.props.actor) || [],
+      synonymList: [],
       text: '',
     }
     this.removeSynonym = this.removeSynonym.bind(this)
     this.addSynonym = this.addSynonym.bind(this)
   }
-
+  componentWillMount () {
+    fetch('http://104.198.76.143:8080/dictionary/synonyms', {method: "GET"})
+    .then((response) => response.json())
+    .then((responseData) => {
+        this.setState({synonymList: responseData[this.props.actor] || []})
+    })
+    .done()
+  }
   static navigationOptions = ({ navigation }) => ({
     title: `Add synonyms for ${this.props.actor}`,
   })
@@ -41,6 +48,7 @@ export default class Synonyms extends React.Component {
   }
   render() {
     const { actor } = this.props
+    console.log('inside render: ', this.state.synonymList);
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.header}>{`Add synonyms for ${actor}`}</Text>
