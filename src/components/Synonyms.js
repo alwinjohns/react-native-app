@@ -27,10 +27,13 @@ export default class Synonyms extends React.Component {
     this.addSynonym = this.addSynonym.bind(this)
   }
   componentWillMount () {
-    fetch('http://104.198.76.143:8080/dictionary/synonyms', {method: "GET"})
+    fetch('http://104.198.76.143:8080/dictionary/synonyms', {method: "GET", headers: { "secret-key": "mySecretKey" }})
     .then((response) => response.json())
     .then((responseData) => {
         this.setState({synonymList: responseData[this.props.actor] || []})
+    })
+    .catch(() => {
+        this.setState({synonymList: []})
     })
     .done()
   }

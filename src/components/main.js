@@ -12,10 +12,13 @@ export default class Main extends React.Component {
     }
     componentWillMount () {
 
-      fetch('http://104.198.76.143:8080/dictionary/actors', {method: "GET"})
+      fetch('http://104.198.76.143:8080/dictionary/actors', {method: "GET", headers: { "secret-key": "mySecretKey" }})
       .then((response) => response.json())
       .then((responseData) => {
           this.setState({ actors: responseData });
+      })
+      .catch(() => {
+        this.setState({ actors: [] });
       })
       .done()
     }
