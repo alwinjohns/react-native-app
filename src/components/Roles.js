@@ -5,7 +5,7 @@ import { getActorRoles } from './../reducers/fakeRoles'
 const ListItem = ({item, remove}) =>
     <View>
       <Text
-        style={styles.item}>Role : {item.key}
+        style={styles.item}>Role : {item.role}
       </Text>
       <Text>{item.start} - {item.end}</Text>
       <Button
@@ -35,15 +35,42 @@ export default class Roles extends React.Component {
   })
 
   removeRole(name) {
-    const index = this.state.roleList.findIndex((e) => e.key === name)
-    // console.log('index', index)
-    this.setState({roleList: [...this.state.roleList.slice(0, index), ...this.state.roleList.slice(index + 1)]})
+    const data = {
+                    "name": this.props.actor,
+                    "role": name
+                  }
+    console.log(data)
+    fetch('http://104.198.76.143:8080/dictionary/deleteRole', {method: "DELETE", headers: { "secret-key": "mySecretKey", "Content-Type": "application/json" }, body: JSON.stringify(data)})
+    .then(() => {
+      const index = this.state.roleList.findIndex((e) => e.key === name)
+      this.setState({roleList: [...this.state.roleList.slice(0, index), ...this.state.roleList.slice(index + 1)]})
+    })
+
+    .catch((e) => {
+        console.log('could not delete', e)
+    })
+    .done()
   }
   addRole() {
-    this.state.text !== '' && this.setState({roleList: [...this.state.roleList, { key: this.state.text, start: this.state.start, end: this.state.end } ]})
-    this.state.text = ''
-    this.state.start = ''
-    this.state.end = ''
+    const data =  {
+                    "actor": this.props.actor,
+                    "role": this.state.text,
+                    "start": this.state.start,
+                    "end": this.state.end
+                  }
+    console.log(data);
+    fetch('http://104.198.76.143:8080/dictionary/saveRole', {method: "POST", headers: { "secret-key": "mySecretKey", "Content-Type": "application/json" }, body: JSON.stringify(data)})
+    .then(() => {
+      this.state.text !== '' && this.setState({roleList: [...this.state.roleList, { key: this.state.text, start: this.state.start, end: this.state.end } ]})
+      this.state.text = ''
+      this.state.start = ''
+      this.state.end = ''
+    })
+
+    .catch((e) => {
+        console.log('could not add', e)
+    })
+    .done()
   }
   componentWillMount () {
     fetch('http://104.198.76.143:8080/dictionary/actorRoles', {method: "GET", headers: { "secret-key": "mySecretKey" }})

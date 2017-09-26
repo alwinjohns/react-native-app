@@ -30,7 +30,10 @@ export default class Synonyms extends React.Component {
     fetch('http://104.198.76.143:8080/dictionary/synonyms', {method: "GET", headers: { "secret-key": "mySecretKey" }})
     .then((response) => response.json())
     .then((responseData) => {
-        this.setState({synonymList: responseData[this.props.actor] || []})
+      const resp = responseData[this.props.actor] || []
+      console.log('synonyms: ', resp);
+
+        this.setState({synonymList: resp})
     })
     .catch(() => {
         this.setState({synonymList: []})
