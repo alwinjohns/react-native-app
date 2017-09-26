@@ -31,6 +31,7 @@ export default class Wiki extends React.Component {
     })
     .catch(() => {
       console.log('no wiki found');
+      this.setState({ wiki: '' })
     })
     .done()
   }

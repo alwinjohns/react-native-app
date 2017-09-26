@@ -21,7 +21,7 @@ export default class Roles extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      roleList: getActorRoles(this.props.actor) || [],
+      roleList: [],
       text: '',
       start: '',
       end: '',
@@ -45,6 +45,18 @@ export default class Roles extends React.Component {
     this.state.start = ''
     this.state.end = ''
   }
+  componentWillMount () {
+    fetch('http://104.198.76.143:8080/dictionary/actorRoles', {method: "GET", headers: { "secret-key": "mySecretKey" }})
+    .then((response) => response.json())
+    .then((responseData) => {
+        this.setState({roleList: responseData[this.props.actor] || []})
+    })
+    .catch(() => {
+        this.setState({roleList: []})
+    })
+    .done()
+  }
+
   render() {
     const { actor } = this.props
     return (
