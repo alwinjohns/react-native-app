@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button, FlatList, TextInput } from 'react-native'
 import { MyWebView } from './webView'
-import { getActorLinks } from './../reducers/fakeWikiLinks'
+// import { getActorLinks } from './../reducers/fakeWikiLinks'
 
 const ListItem = ({item}) =>
     <View>
@@ -11,12 +11,32 @@ const ListItem = ({item}) =>
     </View>
 
 export default class Wiki extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      wiki: ''
+    }
+  }
 
   static navigationOptions = ({ navigation }) => ({
     title: `URLs for ${this.props.actor}`,
   })
+  componentWillMount() {
+    const actor = this.props.actor
+    fetch('http://104.198.76.143:8080/dictionary/wikiForActors', {method: "GET", headers: { "secret-key": "mySecretKey" }})
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.log('wiki found:', responseData[actor][actor]);
+      this.setState({wiki: responseData[actor][actor]})
+    })
+    .catch(() => {
+      console.log('no wiki found');
+    })
+    .done()
+  }
   render() {
     const { actor } = this.props
+
     {
       /*
       <View style={styles.container}>
@@ -30,7 +50,7 @@ export default class Wiki extends React.Component {
       */
     }
     return (
-      <MyWebView uri={getActorLinks(actor).link}/>
+      <MyWebView uri={this.state.wiki}/>
 
     )
   }
