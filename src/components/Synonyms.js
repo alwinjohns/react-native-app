@@ -80,7 +80,7 @@ export default class Synonyms extends React.Component {
   }
   render() {
     const { actor } = this.props
-    console.log('inside render: ', this.state.synonymList);
+    // console.log('inside render: ', this.state.synonymList);
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.header}>{`Add synonyms for ${actor}`}</Text>
