@@ -130,5 +130,11 @@ const actorRoles = {
 }
 
 export const getActorRoles = (actor) => {
-  return actorRoles[actor] || []
+  fetch('http://104.198.76.143:8080/dictionary/actorRoles', {method: "GET"})
+  .then((response) => response.json())
+  .then((responseData) => {
+      console.log('roles: ', responseData[actor]);
+      return responseData[actor]
+  })
+  .done()
 }

@@ -20,27 +20,67 @@ export default class Synonyms extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      synonymList: getActorSynonyms(this.props.actor) || [],
+      synonymList: [],
       text: '',
     }
     this.removeSynonym = this.removeSynonym.bind(this)
     this.addSynonym = this.addSynonym.bind(this)
   }
+  componentWillMount () {
+    fetch('http://104.198.76.143:8080/dictionary/synonyms', {method: "GET", headers: { "secret-key": "mySecretKey" }})
+    .then((response) => response.json())
+    .then((responseData) => {
+      const resp = responseData[this.props.actor] || []
+      console.log('synonyms: ', resp);
 
+        this.setState({synonymList: resp})
+    })
+    .catch(() => {
+        this.setState({synonymList: []})
+    })
+    .done()
+  }
   static navigationOptions = ({ navigation }) => ({
     title: `Add synonyms for ${this.props.actor}`,
   })
 
   removeSynonym(name) {
-    const index = this.state.synonymList.findIndex((e) => e === name)
-    this.setState({synonymList: [...this.state.synonymList.slice(0, index), ...this.state.synonymList.slice(index + 1)]})
+    const data = {
+                    "name": this.props.actor,
+                    "synonym": name
+                  }
+    console.log(data);
+    fetch('http://104.198.76.143:8080/dictionary/deleteSynonym', {method: "DELETE", headers: { "secret-key": "mySecretKey", "Content-Type": "application/json" }, body: JSON.stringify(data)})
+    .then(() => {
+      const index = this.state.synonymList.findIndex((e) => e === name)
+      this.setState({ synonymList: [ ...this.state.synonymList.slice(0, index), ...this.state.synonymList.slice(index + 1) ] })
+    })
+
+    .catch((e) => {
+        console.log('could not delete', e)
+    })
+    .done()
   }
   addSynonym() {
-    this.state.text !== '' && this.setState({synonymList: [...this.state.synonymList, this.state.text]})
-    this.state.text = ''
+    const data = {
+                    "name": this.props.actor,
+                    "synonym": this.state.text
+                  }
+    console.log(data);
+    fetch('http://104.198.76.143:8080/dictionary/saveSynonym', {method: "POST", headers: { "secret-key": "mySecretKey", "Content-Type": "application/json" }, body: JSON.stringify(data)})
+    .then(() => {
+      this.state.text !== '' && this.setState({synonymList: [...this.state.synonymList, this.state.text]})
+      this.state.text = ''
+    })
+
+    .catch((e) => {
+        console.log('could not add', e)
+    })
+    .done()
   }
   render() {
     const { actor } = this.props
+    // console.log('inside render: ', this.state.synonymList);
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.header}>{`Add synonyms for ${actor}`}</Text>

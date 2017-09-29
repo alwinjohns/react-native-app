@@ -1,17 +1,35 @@
 import React from 'react'
-import { Alert, StyleSheet, Text, View, FlatList } from 'react-native'
-import { actors } from './../reducers/fakeActorsList'
+import { Alert, StyleSheet, Text, View, FlatList, Button } from 'react-native'
+// import { actors } from './../reducers/fakeActorsList'
 import { getMoviesFromApiAsync } from './../reducers/actors'
 
 const ListItem = ({item, navigate}) => <Text style={styles.item} onPress={() => navigate('Chat', { actor: item.key })}>{item.key}</Text>
 
 export default class Main extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { actors: [] } ;
+    }
+    componentWillMount () {
+
+      fetch('http://104.198.76.143:8080/dictionary/actors', {method: "GET", headers: { "secret-key": "mySecretKey" }})
+      .then((response) => response.json())
+      .then((responseData) => {
+          this.setState({ actors: responseData });
+      })
+      .catch(() => {
+        this.setState({ actors: [] });
+      })
+      .done()
+    }
     render() {
       const { navigate } = this.props
+      const { actors } = this.state
+
       return (
         <View style={styles.container}>
             <FlatList
-              data={actors}
+              data={actors.map(e => ({key: e}))}
               renderItem={({item}) => <ListItem item={item} navigate={navigate}/>}
             />
         </View>
